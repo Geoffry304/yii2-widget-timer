@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by aayaresko on 30.04.15.
  */
 
@@ -40,6 +40,7 @@
                 'seconds': 0,
                 'minutes': 0,
                 'hours': 0,
+                'milliseconds': 0,
                 'animate': true,
                 'animationSpeed': 200,
                 'animationTimes': 3,
@@ -56,11 +57,14 @@
                 return plugin.isRunning;
             },
             getTime: function () {
-                plugin.options.seconds += 1;
+//                plugin.options.seconds += 1;
+                plugin.options.milliseconds += 1;
                 plugin.calculate();
                 $(plugin.options.container).html( plugin.formatDate() );
             },
-            setTime: function ( seconds, minutes, hours ) {
+//            setTime: function ( seconds, minutes, hours ) {
+                setTime: function ( milliseconds,seconds, minutes, hours ) {
+                plugin.options.milliseconds = milliseconds;
                 plugin.options.seconds = seconds;
                 plugin.options.hours = hours;
                 plugin.options.minutes = minutes;
@@ -68,13 +72,14 @@
                 
             },
             flush: function (){
-                plugin.setTime( 0, 0, 0 );
+                plugin.setTime( 0, 0, 0, 0 );
                 $(plugin.options.container).html( plugin.formatDate() );
                 plugin.removeLocalStorage();
                 console.log("Success! Timer flushed.");
             },
             formatDate: function (){
-                var seconds = plugin.options.seconds,
+                var milliseconds = plugin.options.milliseconds,
+                    seconds = plugin.options.seconds,
                     minutes = plugin.options.minutes,
                     hours = plugin.options.hours;
                 if( plugin.options.hours < 10 ){
@@ -86,16 +91,28 @@
                 if( plugin.options.seconds < 10 ){
                     seconds = "0" + plugin.options.seconds;
                 }
-                return hours + ":" + minutes + ":" + seconds;
+                if( plugin.options.milliseconds < 10 ){
+                    milliseconds = "0" + plugin.options.milliseconds;
+                }
+                return hours + ":" + minutes + ":" + seconds + "," + milliseconds.toString().substr(0,2);
             },
             formatSeconds: function (){
                 var seconds = plugin.options.seconds,
                     minutes = plugin.options.minutes,
                     hours = plugin.options.hours;
                 var total = seconds + (60*minutes) + (3600*hours);
-                return total;
+                return {'total': total, 'milliseconds': plugin.options.milliseconds};
             },
             calculate: function () {
+                var date = new Date(Date.now() - localStorage.getItem("starttime"));
+                plugin.options.milliseconds = date.getMilliseconds();
+                plugin.options.seconds = date.getSeconds();
+                plugin.options.minutes = date.getMinutes();
+                plugin.options.hours = date.getHours() - 1;
+                if( plugin.options.milliseconds > 999 ) {
+                    plugin.options.seconds += 1;
+                    plugin.options.milliseconds = 0;
+                }
                 if( plugin.options.seconds > 59 ) {
                     plugin.options.minutes += 1;
                     plugin.options.seconds = 0;
@@ -107,16 +124,20 @@
                 if( plugin.options.hours > 59 ) {
                     plugin.options.hours = 0;
                 }
-                
+                var dateformat = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "," + date.getMilliseconds();
+                localStorage.setItem("difference", dateformat);
+                localStorage.setItem("milliseconds", plugin.options.milliseconds);
                 localStorage.setItem("seconds", plugin.options.seconds);
                 localStorage.setItem("hours", plugin.options.hours);
                 localStorage.setItem("minutes", plugin.options.minutes);
             },
             removeLocalStorage: function(){
+                localStorage.removeItem("milliseconds");
                 localStorage.removeItem("seconds");
                 localStorage.removeItem("minutes");
                 localStorage.removeItem("hours");
                 localStorage.removeItem("starttime");
+                localStorage.removeItem("difference");
             },
             init: function( autoStart ){
                 if( plugin.isRunning ){
@@ -134,15 +155,17 @@
                 } else {
                     
                     if (localStorage.getItem("seconds")){
+                      plugin.options.milliseconds = parseInt(localStorage.getItem("milliseconds"));
                       plugin.options.seconds = parseInt(localStorage.getItem("seconds"));
                       plugin.options.minutes = parseInt(localStorage.getItem("minutes"));
                       plugin.options.hours = parseInt(localStorage.getItem("hours"));
+                      
                     } else {
                         localStorage.setItem("starttime", Date.now());
                     }
                     plugin.isRunning = true;
                     plugin.run();
-                    plugin.animate( 0 );
+//                    plugin.animate( 0 );
                     console.log("Success! Timer started.");
                 }
             },
@@ -161,7 +184,7 @@
                     } else {
                         console.log("Success! Cycle interrupted.");
                     }
-                }, 1000);
+                }, 0.1);
             },
             animate: function( done ){
                 if( $(plugin.options.container).css("opacity") < 1 ){

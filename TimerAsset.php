@@ -10,7 +10,7 @@
  * @subpackage yii2-widget-timer
  */
 
-namespace aayaresko\timer;
+namespace geoffry304\timer;
 
 use yii\web\AssetBundle;
 use yii\web\View;
@@ -25,7 +25,7 @@ use yii\web\View;
  */
 class TimerAsset extends AssetBundle {
 
-    public $sourcePath = '@vendor/aayaresko/yii2-widget-timer/assets';
+    public $sourcePath = '@vendor/geoffry304/yii2-widget-timer/assets';
 
     public $publishOptions = [
         'forceCopy' => true

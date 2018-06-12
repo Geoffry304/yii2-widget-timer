@@ -10,7 +10,7 @@
  * @subpackage yii2-widget-timer
  */
 
-namespace aayaresko\timer;
+namespace geoffry304\timer;
 
 use yii\base\Widget;
 use yii\helpers\Json;

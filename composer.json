@@ -1,5 +1,5 @@
 {
-  "name": "aayaresko/yii2-widget-timer",
+  "name": "geoffry304/yii2-widget-timer",
   "description": "Yii2 widget that displays controllable timer/stopwatch",
   "keywords": [
     "yii2",
@@ -11,7 +11,7 @@
     "jquery",
     "plugin"
   ],
-  "homepage": "https://github.com/aayaresko/yii2-widget-timer",
+  "homepage": "https://github.com/geoffry304/yii2-widget-timer",
   "type": "yii2-extension",
   "license": "BSD-3-Clause",
   "authors": [
@@ -25,7 +25,7 @@
   },
   "autoload": {
     "psr-4": {
-      "aayaresko\\timer\\": ""
+      "geoffry304\\timer\\": ""
     }
   }
 }

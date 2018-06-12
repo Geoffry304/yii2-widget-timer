@@ -49,6 +49,12 @@
             getTimeAsString: function () {
                 return plugin.formatDate();
             },
+            getTimeAsSeconds: function () {
+                return plugin.formatSeconds();
+            },
+            isTimerRunning: function () {
+                return plugin.isRunning;
+            },
             getTime: function () {
                 plugin.options.seconds += 1;
                 plugin.calculate();
@@ -56,12 +62,15 @@
             },
             setTime: function ( seconds, minutes, hours ) {
                 plugin.options.seconds = seconds;
-                plugin.options.hours = minutes;
-                plugin.options.minutes = hours;
+                plugin.options.hours = hours;
+                plugin.options.minutes = minutes;
+
+                
             },
             flush: function (){
                 plugin.setTime( 0, 0, 0 );
                 $(plugin.options.container).html( plugin.formatDate() );
+                plugin.removeLocalStorage();
                 console.log("Success! Timer flushed.");
             },
             formatDate: function (){
@@ -79,6 +88,13 @@
                 }
                 return hours + ":" + minutes + ":" + seconds;
             },
+            formatSeconds: function (){
+                var seconds = plugin.options.seconds,
+                    minutes = plugin.options.minutes,
+                    hours = plugin.options.hours;
+                var total = seconds + (60*minutes) + (3600*hours);
+                return total;
+            },
             calculate: function () {
                 if( plugin.options.seconds > 59 ) {
                     plugin.options.minutes += 1;
@@ -91,6 +107,16 @@
                 if( plugin.options.hours > 59 ) {
                     plugin.options.hours = 0;
                 }
+                
+                localStorage.setItem("seconds", plugin.options.seconds);
+                localStorage.setItem("hours", plugin.options.hours);
+                localStorage.setItem("minutes", plugin.options.minutes);
+            },
+            removeLocalStorage: function(){
+                localStorage.removeItem("seconds");
+                localStorage.removeItem("minutes");
+                localStorage.removeItem("hours");
+                localStorage.removeItem("starttime");
             },
             init: function( autoStart ){
                 if( plugin.isRunning ){
@@ -102,10 +128,18 @@
                     plugin.go();
                 }
             },
-            go: function(){
+            go: function( animate ){
                 if( plugin.isRunning ){
                     console.log("Error! Plugin already running!")
                 } else {
+                    
+                    if (localStorage.getItem("seconds")){
+                      plugin.options.seconds = parseInt(localStorage.getItem("seconds"));
+                      plugin.options.minutes = parseInt(localStorage.getItem("minutes"));
+                      plugin.options.hours = parseInt(localStorage.getItem("hours"));
+                    } else {
+                        localStorage.setItem("starttime", Date.now());
+                    }
                     plugin.isRunning = true;
                     plugin.run();
                     plugin.animate( 0 );
@@ -148,7 +182,9 @@
             go: plugin.go,
             stop: plugin.stop,
             flush: plugin.flush,
-            timeAsString: plugin.getTimeAsString
+            timeAsString: plugin.getTimeAsString,
+            timeAsSeconds: plugin.getTimeAsSeconds,
+            isRunning: plugin.isTimerRunning
         };
     };
 })(jQuery);

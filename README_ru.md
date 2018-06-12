@@ -12,15 +12,15 @@
 
 ## Установка
 
-Предпочтительный способ установки через [composer](http://getcomposer.org/download/). Ознакомьтесь с требовния расширения и его зависимостями в [composer.json](https://github.com/aayaresko/yii2-widget-timer/blob/master/composer.json).
+Предпочтительный способ установки через [composer](http://getcomposer.org/download/). Ознакомьтесь с требовния расширения и его зависимостями в [composer.json](https://github.com/geoffry304/yii2-widget-timer/blob/master/composer.json).
 
 Для установки выполните
 ```
-$ php composer.phar require aayaresko/yii2-widget-timer "*"
+$ php composer.phar require geoffry304/yii2-widget-timer "*"
 ```
 или добавьте
 ```
-"aayaresko/yii2-widget-timer": "*"
+"geoffry304/yii2-widget-timer": "*"
 ```
 в секцию ```require``` вашего `composer.json`.
 
@@ -29,7 +29,7 @@ $ php composer.phar require aayaresko/yii2-widget-timer "*"
 Выполнить загрузку необходимых компонентов и подготовить widget
 
 ```php
-use aayaresko\timer\Timer
+use geoffry304\timer\Timer
 Timer::widget([
     'options' => [
         'container' => '.timer',

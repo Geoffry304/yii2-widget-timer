@@ -9,22 +9,22 @@ Displays time elapsed since timer started in format HH:MM:SS:
 It can run automatically (after page is load) or manually. It is possible to stop and reset the timer.
 
 ## Installation
-The preferred way to install extension is via [composer](http://getcomposer.org/download/). Check the [composer.json](https://github.com/aayaresko/yii2-widget-timer/blob/master/composer.json) for this extension's requirements and dependencies.
+The preferred way to install extension is via [composer](http://getcomposer.org/download/). Check the [composer.json](https://github.com/geoffry304/yii2-widget-timer/blob/master/composer.json) for this extension's requirements and dependencies.
 
 To install, either run
 ```
-$ php composer.phar require aayaresko/yii2-widget-timer "*"
+$ php composer.phar require geoffry304/yii2-widget-timer "*"
 ```
 or add
 ```
-"aayaresko/yii2-widget-timer": "*"
+"geoffry304/yii2-widget-timer": "*"
 ```
 to the ```require``` section of your `composer.json`.
 
 ## Usage
 Upload all necessary components and prepare widget
 ```php
-use aayaresko\timer\Timer
+use geoffry304\timer\Timer
 Timer::widget([
     'options' => [
         'container' => '.timer',

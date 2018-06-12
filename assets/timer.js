@@ -1,4 +1,4 @@
-﻿/**
+﻿﻿/**
  * Created by aayaresko on 30.04.15.
  */
 
@@ -101,7 +101,11 @@
                     minutes = plugin.options.minutes,
                     hours = plugin.options.hours;
                 var total = seconds + (60*minutes) + (3600*hours);
-                return {'total': total, 'milliseconds': plugin.options.milliseconds};
+                return {'total': total, 
+                        'milliseconds': plugin.options.milliseconds,
+                        'seconds': plugin.options.seconds,
+                        'minutes': plugin.options.minutes,
+                        'hours': plugin.options.hours};
             },
             calculate: function () {
                 var date = new Date(Date.now() - localStorage.getItem("starttime"));
